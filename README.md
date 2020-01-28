@@ -67,3 +67,74 @@ In this example, everything I do to my dataset will be done to the "my_dataframe
 1. Follow along with Zoe and get comfortable copying and getting your code to work and produce the same result 
 2. Submit your code to git (if your code doesn't work or its incomplete, that's okay :) ) 
 
+
+
+
+
+
+head(iris, 4)
+install.packages("dplyr")
+install.packages("ggpubr")
+install.packages("formattable")
+library(formattable)
+library(dplyr)
+library(ggpubr)
+my_iris_dataframe <- data.frame(iris)
+levels(my_iris_dataframe$Species)
+head(my_iris_dataframe, 2)
+str(my_iris_dataframe)
+summary(my_iris_dataframe)
+filter(my_iris_dataframe,Species=="virginica")
+my_flower_table <- filter(my_iris_dataframe,Species=="virginica")
+count(my_flower_table)
+filter(my_iris_dataframe,Species=="virginica") %>%
+  count() 
+select(my_iris_dataframe, Sepal.Length, Sepal.Width, Species) %>%
+  filter(Species=="virginica" & Sepal.Length<6 & Sepal.Width<=2.7)
+head(arrange(my_iris_dataframe, Sepal.Length, desc(Sepal.Width)), 8)
+
+
+my_iris_dataframe %>%
+  group_by(Species) %>%
+  summarise (
+    mean_petal_length =  mean(Petal.Length),
+    mean_sepal_length = mean(Sepal.Length),
+    median_sepal_width = median(Sepal.Width),
+    median_pedal_width = median(Petal.Width)
+  )
+
+
+complex_query <- my_iris_dataframe %>%
+  group_by(Species) %>%
+  summarise (
+    mean_petal_length =  mean(Petal.Length),
+    mean_sepal_length = mean(Sepal.Length),
+    median_sepal_width = median(Sepal.Width),
+    median_pedal_width = median(Petal.Width)
+  )
+
+
+formattable(complex_query)
+
+library(ggpubr)
+
+plot_species_length <- ggviolin(my_iris_dataframe,
+                                x = "Species",
+                                y = "Sepal.Length",
+                                fill = "Species",
+                                palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+                                add = "boxplot", add.params = list(fill='white')
+)
+
+
+plot_species_length
+
+compare_species <- list( c("setosa", "versicolor"), c("setosa", "virginica"))
+
+plot_species_length + stat_compare_means(comparisons = compare_species, label = "p.signif")
+
+
+my_cols <- c("#00AFBB", "#E7B800", "#FC4E07")  
+pairs(iris[,1:4], pch = 19,  cex = 0.5,
+      col = my_cols[iris$Species],
+      lower.panel=NULL)
