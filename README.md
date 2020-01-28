@@ -73,24 +73,41 @@ In this example, everything I do to my dataset will be done to the "my_dataframe
 
 
 head(iris, 4)
+
 install.packages("dplyr")
+
 install.packages("ggpubr")
+
 install.packages("formattable")
+
 library(formattable)
+
 library(dplyr)
+
 library(ggpubr)
+
 my_iris_dataframe <- data.frame(iris)
+
 levels(my_iris_dataframe$Species)
+
 head(my_iris_dataframe, 2)
+
 str(my_iris_dataframe)
+
 summary(my_iris_dataframe)
+
 filter(my_iris_dataframe,Species=="virginica")
+
 my_flower_table <- filter(my_iris_dataframe,Species=="virginica")
+
 count(my_flower_table)
+
 filter(my_iris_dataframe,Species=="virginica") %>%
   count() 
+
 select(my_iris_dataframe, Sepal.Length, Sepal.Width, Species) %>%
   filter(Species=="virginica" & Sepal.Length<6 & Sepal.Width<=2.7)
+
 head(arrange(my_iris_dataframe, Sepal.Length, desc(Sepal.Width)), 8)
 
 
